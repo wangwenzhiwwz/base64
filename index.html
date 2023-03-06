@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Base64 Encoder/Decoder</title>
+
+	<!-- 引入 Bootstrap 样式表 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+
+	<!-- 引入 Font Awesome 图标 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+	<!-- 定义自定义样式表 -->
+	<style>
+		body {
+			background-color: #F8F8F8;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			padding: 24px;
+		}
+
+		.card {
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+			border-radius: 4px;
+			margin-bottom: 24px;
+			overflow: hidden;
+		}
+
+		.card-header {
+			background-color: #007bff;
+			color: #FFF;
+			padding: 16px;
+		}
+
+		.card-header h5 {
+			font-size: 20px;
+			font-weight: bold;
+			margin: 0;
+		}
+
+		.card-body {
+			padding: 24px;
+		}
+
+		.form-group label {
+			color: #666;
+			display: block;
+			font-size: 16px;
+			margin-bottom: 8px;
+			font-weight: bold;
+		}
+
+		.form-control {
+			border-radius: 4px;
+			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+			font-size: 16px;
+			line-height: 1.5;
+			padding: 8px;
+			width: 100%;
+			border: none;
+			background-color: #FFF;
+			color: #333;
+			box-sizing: border-box;
+			height: auto;
+		}
+
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+			color: #FFF;
+			font-weight: bold;
+			border-radius: 4px;
+			transition: all 0.2s ease-in-out;
+			box-shadow: none;
+			text-shadow: none;
+		}
+
+		.btn-primary:hover {
+			background-color: #0069d9;
+			border-color: #0062cc;
+		}
+
+		.btn-secondary {
+			background-color: #f8f9fa;
+			border-color: #f8f9fa;
+			color: #333;
+			font-weight: bold;
+			border-radius: 4px;
+			transition: all 0.2s ease-in-out;
+			box-shadow: none;
+			text-shadow: none;
+		}
+
+		.btn-secondary:hover {
+			background-color: #e2e6ea;
+			border-color: #dae0e5;
+			color: #333;
+		}
+
+		.form-group:last-child {
+			margin-bottom: 0;
+		}
+
+		.form-control:focus {
+			border-color: #007bff;
+			box-shadow:
+			0 0 0 0.2rem rgba(0,123,255,.25);
+	}
+
+	.copy-btn {
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 8px 16px;
+		background-color: #007bff;
+		color: #FFF;
+		border: none;
+		font-weight: bold;
+		transition: all 0.2s ease-in-out;
+		border-radius: 20px 0 0 0;
+	}
+
+	.copy-btn:hover {
+		background-color: #0069d9;
+	}
+
+	.copy-success {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 8px 16px;
+		background-color: #28a745;
+		color: #FFF;
+		border: none;
+		font-weight: bold;
+		transition: all 0.2s ease-in-out;
+		border-radius: 20px 0 0 0;
+	}
+
+	.copy-success:hover {
+		background-color: #218838;
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<div class="card">
+					<div class="card-header bg-primary text-white">
+						<h5><i class="fas fa-code"></i> Base64 Encoder/Decoder</h5>
+					</div>
+					<div class="card-body">
+						<form>
+							<div class="form-group">
+								<label for="input-text">输入文本</label>
+								<textarea class="form-control" id="input-text" rows="5"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="output-text">输出结果</label>
+								<div class="input-group">
+									<textarea class="form-control" id="output-text" rows="5"></textarea>
+									<div class="input-group-append">
+										<button class="btn copy-btn" type="button"><i class="far fa-copy"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-primary btn-block" id="encode-btn" type="button">编码</button>
+								<button class="btn btn-secondary btn-block" id="decode-btn" type="button">解码</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 引入 jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- 引入 Bootstrap JavaScript 插件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- 定义 JavaScript 代码 -->
+<script>
+	$(function() {
+		// 获取页面元素
+		var $inputText = $('#input-text');
+		var $outputText = $('#output-text');
+		var $encodeBtn = $('#encode-btn');
+		var $decodeBtn = $('#decode-btn');
+		var $copyBtn = $('.copy-btn');
+		var $copySuccess = $('.copy-success');
+
+		// 编码事件
+		$encodeBtn.on('click', function() {
+			var inputText = $inputText.val();
+			var outputText = btoa(inputText);
+			$outputText.val(outputText);
+		});
+
+		// 解码事件
+		$decodeBtn.on
+		('click', function() {
+		var inputText = $inputText.val();
+		var outputText = atob(inputText);
+		$outputText.val(outputText);
+		});
+
+				// 复制事件
+				$copyBtn.on('click', function() {
+			$outputText.select();
+			document.execCommand('copy');
+			$copyBtn.hide();
+			$copySuccess.show();
+			setTimeout(function() {
+				$copySuccess.hide();
+				$copyBtn.show();
+			}, 1000);
+		});
+	});
+</script>
+</body>
+</html>

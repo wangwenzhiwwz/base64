@@ -1,229 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Base64 Encoder/Decoder</title>
-	
-	<link rel="icon" href="https://wangwenzhi.eu.org/images/favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encoding Tool</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
 
-	<!-- 引入 Bootstrap 样式表 -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    header {
+      background-color: #000;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+    }
 
-	<!-- 引入 Font Awesome 图标 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-	<!-- 定义自定义样式表 -->
-	<style>
-		body {
-			background-color: #F8F8F8;
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			font-size: 16px;
-			line-height: 1.5;
-			padding: 24px;
-		}
+    #inputText {
+      width: 95%;
+      height: 100px;
+      resize: none;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 16px;
+      color: #333;
+      display: block;
+      margin: 0 auto;
+    }
 
-		.card {
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-			border-radius: 4px;
-			margin-bottom: 24px;
-			overflow: hidden;
-		}
+    .btn-group {
+      display: flex;
+      justify-content: center; /* Center the buttons horizontally */
+      margin-bottom: 10px;
+    }
 
-		.card-header {
-			background-color: #007bff;
-			color: #FFF;
-			padding: 16px;
-		}
+    .btn {
+      flex: 1;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 20px;
+      font-size: 14px;
+      text-align: center;
+      color: #fff;
+    }
 
-		.card-header h5 {
-			font-size: 20px;
-			font-weight: bold;
-			margin: 0;
-		}
+    .btn.encode {
+      background-color: #4CAF50;
+      margin-right: 10px; /* Reduce the right margin */
+    }
 
-		.card-body {
-			padding: 24px;
-		}
+    .btn.decode {
+      background-color: #999;
+      margin-left: 10px; /* Reduce the left margin */
+    }
 
-		.form-group label {
-			color: #666;
-			display: block;
-			font-size: 16px;
-			margin-bottom: 8px;
-			font-weight: bold;
-		}
+    .result {
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 10px;
+      word-wrap: break-word;
+      position: relative;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.1;
+      white-space: pre-wrap;
+    }
 
-		.form-control {
-			border-radius: 4px;
-			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
-			font-size: 16px;
-			line-height: 1.5;
-			padding: 8px;
-			width: 100%;
-			border: none;
-			background-color: #FFF;
-			color: #333;
-			box-sizing: border-box;
-			height: auto;
-		}
+    .copy-btn {
+      position: absolute;
+      top: 100px;
+      right: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
 
-		.btn-primary {
-			background-color: #007bff;
-			border-color: #007bff;
-			color: #FFF;
-			font-weight: bold;
-			border-radius: 4px;
-			transition: all 0.2s ease-in-out;
-			box-shadow: none;
-			text-shadow: none;
-		}
+    .toast {
+      background-color: rgba(76, 175, 80, 0.9);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      z-index: 999;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px; /* Increase the bottom margin for more spacing */
+      margin-top: 20px;    /* Increase the top margin for more spacing */
+    }
+  </style>
 
-		.btn-primary:hover {
-			background-color: #0069d9;
-			border-color: #0062cc;
-		}
-
-		.btn-secondary {
-			background-color: #f8f9fa;
-			border-color: #f8f9fa;
-			color: #333;
-			font-weight: bold;
-			border-radius: 4px;
-			transition: all 0.2s ease-in-out;
-			box-shadow: none;
-			text-shadow: none;
-		}
-
-		.btn-secondary:hover {
-			background-color: #e2e6ea;
-			border-color: #dae0e5;
-			color: #333;
-		}
-
-		.form-group:last-child {
-			margin-bottom: 0;
-		}
-
-		.form-control:focus {
-			border-color: #007bff;
-			box-shadow:
-			0 0 0 0.2rem rgba(0,123,255,.25);
-	}
-
-	.copy-btn {
-		cursor: pointer;
-		position: absolute;
-		top: 0;
-		right: 0;
-		padding: 8px 16px;
-		background-color: #007bff;
-		color: #FFF;
-		border: none;
-		font-weight: bold;
-		transition: all 0.2s ease-in-out;
-		border-radius: 20px 0 0 0;
-	}
-
-	.copy-btn:hover {
-		background-color: #0069d9;
-	}
-
-	.copy-success {
-		position: absolute;
-		top: 0;
-		right: 0;
-		padding: 8px 16px;
-		background-color: #28a745;
-		color: #FFF;
-		border: none;
-		font-weight: bold;
-		transition: all 0.2s ease-in-out;
-		border-radius: 20px 0 0 0;
-	}
-
-	.copy-success:hover {
-		background-color: #218838;
-	}
-</style>
 </head>
+
 <body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<div class="card">
-					<div class="card-header bg-primary text-white">
-						<h5><i class="fas fa-code"></i> Base64 Encoder/Decoder</h5>
-					</div>
-					<div class="card-body">
-						<form>
-							<div class="form-group">
-								<label for="input-text">输入文本</label>
-								<textarea class="form-control" id="input-text" rows="5"></textarea>
-							</div>
-							<div class="form-group">
-								<label for="output-text">输出结果</label>
-								<div class="input-group">
-									<textarea class="form-control" id="output-text" rows="5"></textarea>
-									<div class="input-group-append">
-										<button class="btn copy-btn" type="button"><i class="far fa-copy"></i></button>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<button class="btn btn-primary btn-block" id="encode-btn" type="button">编码</button>
-								<button class="btn btn-secondary btn-block" id="decode-btn" type="button">解码</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <header>
+    <h1>Base64 Encoding Tool</h1>
+  </header>
+  <div class="container">
+    <textarea id="inputText" placeholder="Enter your text here"></textarea>
+    <div class="btn-group">
+      <div class="btn encode" onclick="encodeText()">Encode to Base64</div>
+      <div class="btn decode" onclick="decodeText()">Decode Base64</div>
+    </div>
+    <div class="result" id="outputText"></div>
+  </div>
+  <div class="toast" id="toast">Copied to Clipboard</div>
 
-	<!-- 引入 jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    function encodeText() {
+      const inputText = document.getElementById('inputText').value;
+      const encodedText = btoa(inputText); // Base64编码
+      document.getElementById('outputText').innerText = encodedText;
+    }
 
-<!-- 引入 Bootstrap JavaScript 插件 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    function decodeText() {
+      const inputText = document.getElementById('inputText').value;
+      const decodedText = atob(inputText); // Base64解码
+      document.getElementById('outputText').innerText = decodedText;
+    }
 
-<!-- 定义 JavaScript 代码 -->
-<script>
-	$(function() {
-		// 获取页面元素
-		var $inputText = $('#input-text');
-		var $outputText = $('#output-text');
-		var $encodeBtn = $('#encode-btn');
-		var $decodeBtn = $('#decode-btn');
-		var $copyBtn = $('.copy-btn');
-		var $copySuccess = $('.copy-success');
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2000); // 2秒后自动关闭提示
+    }
 
-		// 编码事件
-		$encodeBtn.on('click', function() {
-			var inputText = $inputText.val();
-			var outputText = btoa(inputText);
-			$outputText.val(outputText);
-		});
+    function copyText() {
+      const outputText = document.getElementById('outputText');
+      const textArea = document.createElement('textarea');
+      textArea.value = outputText.innerText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      showToast(); // 显示提示
+    }
 
-		// 解码事件
-		$decodeBtn.on
-		('click', function() {
-		var inputText = $inputText.val();
-		var outputText = atob(inputText);
-		$outputText.val(outputText);
-		});
-
-				// 复制事件
-				$copyBtn.on('click', function() {
-			$outputText.select();
-			document.execCommand('copy');
-			$copyBtn.hide();
-			$copySuccess.show();
-			setTimeout(function() {
-				$copySuccess.hide();
-				$copyBtn.show();
-			}, 1000);
-		});
-	});
-</script>
+    document.getElementById('outputText').addEventListener('click', copyText);
+  </script>
 </body>
+
 </html>

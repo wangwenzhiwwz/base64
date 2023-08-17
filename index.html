@@ -1,175 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Base64 Encoding Tool</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="https://wangwenzhi.eu.org/images/favicon_io/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://wangwenzhi.eu.org/images/favicon_io/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://wangwenzhi.eu.org/images/favicon_io/favicon-16x16.png">
-  <link rel="manifest" href="https://wangwenzhi.eu.org/images/favicon_io/site.webmanifest">
-  <style>
-    body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f8f8;
-    }
-
-    header {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 6px 0;
-    text-align: center;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-    }
-
-
-    .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 10px;
-      border-radius: 10px;
-      background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    #inputText {
-      width: 95%;
-      height: 100px;
-      resize: none;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 16px;
-      color: #333;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: center; /* Center the buttons horizontally */
-      margin-bottom: 10px;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 10px;
-      cursor: pointer;
-      border-radius: 20px;
-      font-size: 14px;
-      text-align: center;
-      color: #fff;
-    }
-
-    .btn.encode {
-      background-color: #ffc600;
-      margin-right: 10px; /* Reduce the right margin */
-    }
-
-    .btn.decode {
-      background-color: #999;
-      margin-left: 10px; /* Reduce the left margin */
-    }
-
-    .result {
-      background-color: #f8f8f8;
-      padding: 20px;
-      border-radius: 10px;
-      word-wrap: break-word;
-      position: relative;
-      color: #333;
-      font-size: 14px;
-      line-height: 1.1;
-      white-space: pre-wrap;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 100px;
-      right: 10px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-
-    .toast {
-      background-color: rgba(76, 175, 80, 0.9);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 8px;
-      z-index: 999;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: none;
-    }
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px; /* Increase the bottom margin for more spacing */
-      margin-top: 20px;    /* Increase the top margin for more spacing */
-    }
-  </style>
-
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
   <header>
     <h1>Base64 Encoding Tool</h1>
   </header>
   <div class="container">
-    <textarea id="inputText" placeholder="Enter your text here"></textarea>
-    <div class="btn-group">
-      <div class="btn encode" onclick="encodeText()">Encode to Base64</div>
-      <div class="btn decode" onclick="decodeText()">Decode Base64</div>
+    <div class="input-output-container">
+      <textarea id="inputText" placeholder="Enter your text here"></textarea>
+      <div class="result" id="outputText"></div>
     </div>
-    <div class="result" id="outputText"></div>
   </div>
   <div class="toast" id="toast">Copied to Clipboard</div>
-
-  <script>
-    function encodeText() {
-      const inputText = document.getElementById('inputText').value;
-      const encodedText = btoa(inputText); // Base64编码
-      document.getElementById('outputText').innerText = encodedText;
-    }
-
-    function decodeText() {
-      const inputText = document.getElementById('inputText').value;
-      const decodedText = atob(inputText); // Base64解码
-      document.getElementById('outputText').innerText = decodedText;
-    }
-
-    function showToast() {
-      const toast = document.getElementById('toast');
-      toast.style.display = 'block';
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 2000); // 2秒后自动关闭提示
-    }
-
-    function copyText() {
-      const outputText = document.getElementById('outputText');
-      const textArea = document.createElement('textarea');
-      textArea.value = outputText.innerText;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      showToast(); // 显示提示
-    }
-
-    document.getElementById('outputText').addEventListener('click', copyText);
-  </script>
+  <script src="script.js"></script>
 </body>
-
 </html>

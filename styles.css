@@ -1,0 +1,91 @@
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+}
+
+header {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 6px 0;
+  text-align: center;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-output-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .input-output-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  #inputText, #outputText {
+    flex: 1;
+  }
+  
+  #inputText {
+    margin-right: 10px;
+  }
+  
+  #outputText {
+    margin-left: 10px;
+  }
+}
+
+#inputText, #outputText {
+  min-height: 150px;
+  resize: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: pre-wrap; /* 文字自动换行 */
+  overflow-y: auto; /* 添加滚动条以支持高度自适应 */
+  outline: none; /* 去除点击后的边框效果 */
+  caret-color: #333; /* 光标颜色 */
+}
+
+.result {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.1;
+  white-space: pre-wrap; /* 文字自动换行 */
+  overflow-y: auto; /* 添加滚动条以支持高度自适应 */
+  border-bottom: 3px solid #ddd; /* 输出框底部浅灰色边框 */
+}
+
+.toast {
+  background-color: rgba(76, 175, 80, 0.9);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
